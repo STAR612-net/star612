@@ -1,0 +1,138 @@
+.vision-page {
+    font-family: 'Pretendard', sans-serif;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  .vision-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  
+  .vision-intro {
+    font-size: 2.5em;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #1a1a1a;
+    line-height: 1.3;
+  }
+  
+  .vision-intro .highlight {
+    color: #FF8C00; /* 주황색 톤 */
+  }
+  
+  .vision-separator {
+    width: 50px;
+    height: 2px;
+    background-color: #FF4500; /* 붉은색 톤 */
+    margin: 20px auto;
+  }
+  
+  .vision-description {
+    font-size: 1.2em;
+    font-weight: 400;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 40px;
+    color: #666;
+    line-height: 1.5;
+  }
+  
+  .vision-section {
+    display: flex;
+    align-items: stretch; /* 세로 중앙 정렬 */
+    margin-bottom: 40px;
+  }
+  
+  .vision-image {
+    flex: 1; /* 이미지 박스와 텍스트 박스의 비율을 동일하게 설정 */
+    margin-right: 30px;
+  }
+  
+  .vision-image img {
+    width: 100%;
+    height: 100%; /* 250px의 1.5배 */
+    object-fit: cover; /* 이미지 비율 유지 */
+    border-radius: 10px;
+    border: 1px solid #ccc; /* 회색 라인 추가 */
+  }
+  
+  .vision-content {
+    flex: 1; /* 이미지 박스와 텍스트 박스의 비율을 동일하게 설정 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 세로 중앙 정렬 */
+    background-color: #f5f5f5; /* 옅은 회색 배경 */
+    border-radius: 10px; /* 라운드 처리 */
+    padding: 20px; /* 내부 여백 추가 */
+  }
+  
+  .vision-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .vision-icon {
+    width: 30px; /* 아이콘 크기 축소 */
+    height: 30px;
+    margin-right: 10px;
+  }
+  
+  .vision-content h3 {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #0066cc;
+    margin: 0;
+    line-height: 1.3;
+  }
+  
+  .vision-content p {
+    font-size: 0.9em; /* 본문 폰트 크기 축소 */
+    font-weight: 400;
+    color: #666; /* 회색으로 변경 */
+    margin-bottom: 0; /* 하단 여백 제거 */
+    line-height: 1.8;
+  }
+  
+  @media (max-width: 768px) {
+    .vision-section {
+      flex-direction: column;
+    }
+  
+    .vision-image {
+      margin-right: 0;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+  
+    .vision-image img {
+      height: 300px; /* 모바일에서도 1.5배로 증가 */
+    }
+  
+    .vision-intro {
+      font-size: 2em;
+      font-weight: 700;
+    }
+  
+    .vision-description {
+      font-size: 1em;
+      font-weight: 400;
+    }
+  
+    .vision-content h3 {
+      font-size: 1.3em;
+      font-weight: 600;
+    }
+  
+    .vision-content p {
+      font-size: 0.8em;
+      font-weight: 400;
+    }
+  
+    .vision-content {
+      padding: 15px; /* 모바일에서 내부 여백 조정 */
+    }
+  }

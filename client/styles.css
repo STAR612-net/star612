@@ -1,0 +1,115 @@
+/* 리셋 및 기본 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+/* 헤더 스타일 */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f4f4f4;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    height: 50px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav ul li {
+    margin-right: 1rem;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.auth-buttons button {
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 히어로 섹션 */
+.hero {
+    background-image: url('/images/hero-background.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+/* 콘텐츠 섹션 */
+.content .section {
+    display: flex;
+    padding: 4rem 2rem;
+}
+
+.content .section.reverse {
+    flex-direction: row-reverse;
+}
+
+.content .section img {
+    width: 50%;
+    object-fit: cover;
+}
+
+.content .section .text {
+    width: 50%;
+    padding: 2rem;
+}
+
+/* 푸터 */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+    }
+
+    nav ul {
+        margin-top: 1rem;
+    }
+
+    .content .section {
+        flex-direction: column;
+    }
+
+    .content .section.reverse {
+        flex-direction: column;
+    }
+
+    .content .section img,
+    .content .section .text {
+        width: 100%;
+    }
+}
