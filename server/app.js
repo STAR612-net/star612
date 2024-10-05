@@ -7,6 +7,19 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+// 허용할 호스트 목록
+const allowedHosts = ['localhost', 'star612.net', 'www.star612.net'];
+
+// 호스트 확인 미들웨어
+app.use((req, res, next) => {
+  const host = req.get('host');
+  if (allowedHosts.includes(host)) {
+    next();
+  } else {
+    res.status(403).send('Invalid Host header');
+  }
+});
+
 // CORS 및 미들웨어 설정
 const cors = require('cors');
 app.use(cors());
