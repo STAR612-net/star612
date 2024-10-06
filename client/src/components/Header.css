@@ -125,10 +125,28 @@
     margin: 10px 0;
   }
 
+  /* 햄버거 메뉴에서 auth-buttons 완전히 제거 */
   .auth-buttons.open {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+    display: none;
+  }
+
+  /* 스크롤 시 모바일 메뉴 배경색 변경 */
+  .header.scrolled .nav.open {
+    background-color: #fff;
+  }
+
+  .header.scrolled .nav.open ul li a {
+    color: #333;
+  }
+
+  /* 스크롤 시 햄버거 아이콘 색상 변경 */
+  .header.scrolled .hamburger-icon {
+    background-color: #333;
+  }
+
+  .header.scrolled .hamburger-icon::before,
+  .header.scrolled .hamburger-icon::after {
+    background-color: #333;
   }
 }
 

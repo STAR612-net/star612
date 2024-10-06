@@ -124,19 +124,16 @@
 
 .product-cards {
   display: flex;
-  justify-content: space-between; /* 카드 사이 간격 균등 분배 */
-  gap: 15px; /* 카드 사이의 간격 */
-  margin-top: 15px; /* 제목과 카드 사이 간격 */
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .product-card {
   flex: 1;
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+  min-width: 250px;
+  padding: 10px; /* 내부 패딩 추가 */
+  /* 기존 스타일 유지 */
 }
 
 .product-card:hover {
@@ -298,4 +295,15 @@
 
 .learn-more-btn:hover, .contact-btn:hover {
   background-color: #0056b3;
+}
+
+/* 모바일 환경을 위한 미디어 쿼리 */
+@media (max-width: 768px) {
+  .product-cards {
+    flex-direction: column;
+  }
+
+  .product-card {
+    width: 100%;
+  }
 }
