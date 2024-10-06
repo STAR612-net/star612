@@ -2,10 +2,46 @@ const express = require('express');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
+const WebSocket = require('ws'); // WebSocket 모듈 추가
+const helmet = require('helmet'); // Helmet 모듈 추가
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5000;
+const isHttps = process.env.HTTPS === 'true';
+
+// HTTPS 사용 시 필요한 인증서 파일 경로
+const httpsOptions = isHttps ? {
+  key: fs.readFileSync(process.env.SSL_KEY_PATH),
+  cert: fs.readFileSync(process.env.SSL_CERT_PATH)
+} : null;
+
+// HTTP 또는 HTTPS 서버 생성
+const server = isHttps ? https.createServer(httpsOptions, app) : http.createServer(app);
+
+// WebSocket 서버 설정
+const wss = new WebSocket.Server({ server });
+
+wss.on('connection', (ws) => {
+  console.log('New WebSocket connection');
+  ws.on('message', (message) => {
+    console.log('Received:', message);
+  });
+  ws.send('Welcome to the WebSocket server!');
+});
+
+// Helmet을 사용해 CSP 설정 추가
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'", 'https:', 'data:', "'unsafe-inline'", "'unsafe-eval'"],
+      connectSrc: ["'self'", 'wss://star612.net:3000'], // WebSocket 연결 허용
+    },
+  })
+);
 
 // 허용할 호스트 목록
 const allowedHosts = ['localhost', 'star612.net', 'www.star612.net'];
@@ -59,14 +95,12 @@ app.post('/api/send-email', (req, res) => {
     `
   };
 
-  // 먼저 연결을 확인합니다
   transporter.verify(function(error, success) {
     if (error) {
       console.error('Transporter verification error:', error);
       res.status(500).json({ error: 'Error verifying email transporter', details: error.message });
     } else {
       console.log("Server is ready to take our messages");
-      // 연결이 확인되면 이메일을 보냅니다
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
           console.error('Error sending email:', error);
@@ -85,8 +119,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+server.listen(port, () => {
+  console.log(`Server running at ${isHttps ? 'https' : 'http'}://localhost:${port}`);
   console.log('EMAIL_USER:', process.env.EMAIL_USER);
   console.log('EMAIL_PASS is set:', !!process.env.EMAIL_PASS);
 });
