@@ -46,7 +46,7 @@ function Main() {
             <div key={index} className="product-card">
               <h3>{product.name}</h3>
               <p>{product.description}</p>
-              <Link to="/product" className="learn-more-btn">Learn More</Link>
+              <Link to="/product" className="btn">Learn More</Link>
             </div>
           ))}
         </div>
@@ -56,7 +56,7 @@ function Main() {
         <div className="text-content">
           <h2>Contact Us</h2>
           <p>궁금한 점이 있으신가요? 언제든지 문의해주세요.</p>
-          <Link to="/contact" className="contact-btn">문의하기</Link>
+          <Link to="/contact" className="btn">문의하기</Link>
         </div>
       </section>
     </main>

@@ -109,5 +109,28 @@
   
     .contact-form {
       max-width: 100%;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+  
+    .contact-info,
+    .contact-form {
+      width: 100%;
+      max-width: 100%;
+    }
+  
+    .contact-form form {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .contact-form form input,
+    .contact-form form textarea {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    .contact-form form button {
+      width: 100%;
     }
   }
