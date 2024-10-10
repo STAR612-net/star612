@@ -65,7 +65,7 @@ function Product() {
             <p>
               {formatText("학교/기업 등에 AI 튜터가 학습자의 수준과 목표에 맞춘 맞춤형 학습을 제공합니다. 실시간 피드백과 교정 및 그룹 리포터 제공으로 효과적인 언어 습득을 돕습니다.")}
             </p>
-            <Link to="/ai" className="product-link-wrapper">
+            <Link to="https://star612.net/ai/" className="product-link-wrapper">
               <button className="product-link active">바로가기</button>
             </Link>
           </div>
