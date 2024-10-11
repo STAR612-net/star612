@@ -1,36 +1,60 @@
-import React, { useEffect, useRef, useState } from 'react';
-import * as THREE from 'three';
+import React, { Suspense, useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
+import * as THREE from 'three';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import './AvatarDetails.css';
 
-function Model({ url }) {
-  const { scene } = useThree();
-  const [model, setModel] = useState(null);
+function Model({ url, animationIndex }) {
+  const { scene, camera } = useThree();
+  const modelRef = useRef();
   const mixerRef = useRef();
+  const actionsRef = useRef([]);
 
   useEffect(() => {
     const loader = new FBXLoader();
     loader.load(
       url,
       (fbx) => {
-        fbx.scale.set(0.01, 0.01, 0.01);
+        fbx.scale.set(0.04, 0.04, 0.04); // 모델 사이즈를 2배로 증가
         fbx.position.set(0, 0, 0);
         fbx.traverse((child) => {
           if (child.isMesh) {
             child.castShadow = true;
             child.receiveShadow = true;
+            if (child.material) {
+              child.material.shininess = 0;
+            }
           }
         });
-        scene.add(fbx);
-        setModel(fbx);
+        
+        const box = new THREE.Box3().setFromObject(fbx);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const fov = 50;
+        const cameraZ = Math.abs(maxDim / Math.sin((fov / 2) * Math.PI / 180));
+        fbx.position.sub(center);
 
-        if (fbx.animations.length > 0) {
-          mixerRef.current = new THREE.AnimationMixer(fbx);
-          const action = mixerRef.current.clipAction(fbx.animations[0]);
-          action.play();
+        scene.add(fbx);
+        modelRef.current = fbx;
+
+        if (camera) {
+          camera.position.set(0, 0, cameraZ * 1.5); // 카메라 위치 조정
+          camera.lookAt(new THREE.Vector3(0, 0, 0));
         }
+
+        const mixer = new THREE.AnimationMixer(fbx);
+        mixerRef.current = mixer;
+
+        console.log("Available animations:", fbx.animations.map(anim => anim.name));
+
+        fbx.animations.forEach((clip) => {
+          const action = mixer.clipAction(clip);
+          actionsRef.current.push(action);
+        });
+
+        playAnimation(animationIndex);
       },
       (xhr) => {
         console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
@@ -41,11 +65,27 @@ function Model({ url }) {
     );
 
     return () => {
-      if (model) {
-        scene.remove(model);
+      if (modelRef.current) {
+        scene.remove(modelRef.current);
+      }
+      if (mixerRef.current) {
+        mixerRef.current.stopAllAction();
       }
     };
-  }, [scene, url]);
+  }, [scene, url, camera, animationIndex]);
+
+  useEffect(() => {
+    playAnimation(animationIndex);
+  }, [animationIndex]);
+
+  const playAnimation = (index) => {
+    if (mixerRef.current && actionsRef.current.length > index) {
+      mixerRef.current.stopAllAction();
+      const action = actionsRef.current[index];
+      action.setLoop(THREE.LoopRepeat);
+      action.reset().play();
+    }
+  };
 
   useFrame((state, delta) => {
     if (mixerRef.current) {
@@ -56,72 +96,54 @@ function Model({ url }) {
   return null;
 }
 
-function Scene() {
-  const { scene } = useThree();
-
-  useEffect(() => {
-    scene.background = new THREE.Color(0xa0a0a0);
-    scene.fog = new THREE.Fog(0xa0a0a0, 200, 1000);
-
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 5);
-    hemiLight.position.set(0, 200, 0);
-    scene.add(hemiLight);
-
-    const dirLight = new THREE.DirectionalLight(0xffffff, 5);
-    dirLight.position.set(0, 200, 100);
-    dirLight.castShadow = true;
-    dirLight.shadow.camera.top = 180;
-    dirLight.shadow.camera.bottom = -100;
-    dirLight.shadow.camera.left = -120;
-    dirLight.shadow.camera.right = 120;
-    scene.add(dirLight);
-
-    const mesh = new THREE.Mesh(
-      new THREE.PlaneGeometry(2000, 2000),
-      new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false })
-    );
-    mesh.rotation.x = -Math.PI / 2;
-    mesh.receiveShadow = true;
-    scene.add(mesh);
-
-    const grid = new THREE.GridHelper(2000, 20, 0x000000, 0x000000);
-    grid.material.opacity = 0.2;
-    grid.material.transparent = true;
-    scene.add(grid);
-  }, [scene]);
-
-  return null;
+function Lights() {
+  return (
+    <>
+      <ambientLight intensity={0.5} />
+      <directionalLight
+        intensity={0.6}
+        position={[10, 10, 5]}
+        castShadow
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+      />
+      <pointLight intensity={1.6} position={[-10, -10, -5]} />
+    </>
+  );
 }
 
 function AvatarDetails() {
+  const [animationIndex, setAnimationIndex] = useState(0);
+
   return (
     <div className="avatar-details-container">
-    <div className="avatar-details-header" style={{ backgroundImage: `url(${process.env.PUBLIC_URL + '/images/intra-bg.jpg'})` }}>
-      <h1>AI 및 3D 캐릭터 설명</h1>
-    </div>
-    <div className="avatar-details-content">
-      <div className="avatar-section">
-        <h2>이제는 눈으로 보이는 3D 캐릭터-AI 에이전시</h2>
-        <div className="image-text-container">
-          <div className="inner-container">
+      <div className="avatar-details-header" style={{ backgroundImage: `url(${process.env.PUBLIC_URL + '/images/intra-bg.jpg'})` }}>
+        <h1>AI 및 3D 캐릭터 설명</h1>
+      </div>
+      <div className="avatar-details-content">
+        <div className="avatar-section">
+          <h2>눈으로 보이는 AI 에이전시로 활용</h2>
+          <div className="image-text-container">
             <div className="text-box">
-              <p>3D 캐릭터의 경험과 가능성을 지금 경험하세요.</p>                
-            </div>
-            <div className="threejs-container-wrapper">
-              <div className="threejs-container">
-                <Canvas
-                  camera={{ position: [100, 200, 300], fov: 45 }}
-                  shadows
-                >
-                  <Scene />
-                  <Model url={process.env.PUBLIC_URL + '/models/standing.fbx'} />
-                  <OrbitControls target={[0, 100, 0]} />
-                </Canvas>
+              <p>3D 캐릭터의 경험과 가능성을 지금 경험하세요.</p>
+              <div className="animation-buttons">
+                <button onClick={() => setAnimationIndex(0)}>[기본형]</button>
+                <button onClick={() => setAnimationIndex(1)}>[인사]</button>
               </div>
+            </div>
+            <div className="threejs-container">
+              <Suspense fallback={<div>Loading...</div>}>
+                <Canvas shadows>
+                  <PerspectiveCamera makeDefault fov={50} position={[0, 0, 5]} />
+                  <Lights />
+                  <Model url={process.env.PUBLIC_URL + '/models/greeting.fbx'} animationIndex={animationIndex} />
+                  <OrbitControls enablePan={false} enableZoom={false} />
+                </Canvas>
+              </Suspense>
             </div>
           </div>
         </div>
-      </div>
+
         <div className="avatar-section">
           <h2>AI 영어(한국어) 학습과정</h2>
           <div className="image-text-container">
@@ -143,8 +165,8 @@ function AvatarDetails() {
               <img src={process.env.PUBLIC_URL + "/images/gongong.png"} alt="AI 설명" className="image-box" />
             </div>
           </div>
-        </div>
-      </div>
+        </div>     
+      </div> 
     </div>
   );
 }

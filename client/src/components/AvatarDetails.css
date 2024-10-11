@@ -1,12 +1,7 @@
-.avatar-page {
+.avatar-detail-page {
   font-family: 'Pretendard', sans-serif;
   color: #333;
   line-height: 1.6;
-}
-.avatar-details-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .avatar-details-header {
@@ -65,8 +60,8 @@
 /* 3D 출력 공간 스타일 */
 .threejs-container {
   width: 100%;
-  max-width: 400px; /* 최대 폭 설정 */
-  height: 400px; /* 높이 설정 */
+  max-width: 600px; /* 최대 폭 설정 */
+  height: 600px; /* 높이 설정 */
 }
 
 .loader {
