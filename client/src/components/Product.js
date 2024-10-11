@@ -51,7 +51,9 @@ function Product() {
               <p>
                 {formatText("AI 분석 툴을 통해 학습자의 진행 상황을 정확히 파악하고, 이에 따라 성장하는 3D 캐릭터로 학습 동기를 부여합니다. 개인화된 학습 경험과 시각적 피드백으로 효과적인 언어 습득을 지원합니다.")}
               </p>
-              <button className="product-link active">자세히 보기</button>
+              <Link to="/avatar-details" className="product-link-wrapper">
+                <button className="product-link active">자세히 보기</button>
+              </Link>
             </div>
           </div>
         </div>

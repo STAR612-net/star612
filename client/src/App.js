@@ -7,6 +7,7 @@ import Vision from './components/Vision';
 import Product from './components/Product';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import AvatarDetails from './components/AvatarDetails';
 import './App.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/vision" element={<Vision />} />
         <Route path="/product" element={<Product />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/avatar-details" element={<AvatarDetails />} />
       </Routes>
       <Footer />
     </div>
