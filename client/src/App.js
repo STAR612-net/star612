@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Main from './components/Main';
 import Team from './components/Team';
@@ -22,6 +22,7 @@ function App() {
           <Route path="/product" element={<Product />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/avatar-details" element={<AvatarDetails />} />
+          {/* <Route path="/ai/*" element={<Navigate to="/ai" replace />} /> */}
         </Routes>
         <Footer />
       </div>
