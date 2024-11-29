@@ -63,7 +63,7 @@ function Product() {
             <img src={process.env.PUBLIC_URL + "/images/icon01.png"} alt="Icon 1" />
           </div>
           <div className="product-content">
-            <h3>AI 영어친구[Beta]</h3>
+            <h3>AI 영어친구[POC ver.]</h3>
             <p>
               {formatText("학교/기업 등에 AI 튜터가 학습자의 수준과 목표에 맞춘 맞춤형 학습을 제공합니다. 실시간 피드백과 교정 및 그룹 리포터 제공으로 효과적인 언어 습득을 돕습니다.")}
             </p>
@@ -81,7 +81,7 @@ function Product() {
             <img src={process.env.PUBLIC_URL + "/images/icon04.png"} alt="Icon 4" />
           </div>
           <div className="product-content">
-            <h3>성장하는 3D AI 캐릭터</h3>
+            <h3>성장하는 3D AI 캐릭터[MVP 제작중]</h3>
             <p>
               {formatText("사용자의 학습 진도와 연동되어 성장하는 3D 캐릭터를 통해 학습의 몰입감과 친밀도를 높입니다. 캐릭터의 성장이 곧 사용자의 언어 능력 향상을 시각적으로 보여주어 지속적인 학습 동기를 부여합니다.")}
             </p>
