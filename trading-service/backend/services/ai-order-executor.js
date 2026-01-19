@@ -356,7 +356,7 @@ class AIOrderExecutor {
         checkPrice = orderPrice;
       }
     }
-    const orderAmount = buyQty * checkPrice;
+    let orderAmount = buyQty * checkPrice;
     try {
       const balance = await kisAPI.getBalance(user);
       
